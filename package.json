@@ -9,6 +9,8 @@
   },
   "dependencies": {
     "core-js": "^2.6.5",
+    "postcss": "^7.0.17",
+    "tailwindcss": "^1.0.4",
     "vue": "^2.6.10"
   },
   "devDependencies": {
@@ -36,6 +38,7 @@
   },
   "postcss": {
     "plugins": {
+      "tailwindcss": "./tailwind.config.js",
       "autoprefixer": {}
     }
   },
