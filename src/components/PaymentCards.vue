@@ -1,9 +1,10 @@
 <template>
   <div class="px-4 flex items-center flex-col md:flex-wrap md:py-5 md:justify-center xl:justify-start md:flex-row md:ml-3" id="card-container">
-    <card v-for="card in cards.slice(0, maxCards)" :key="card.id" v-bind="card"/>
+    <card v-for="card in cards.slice(0, maxCards)" :key="card.id" v-bind="card" @remove="removeCard" :update-card="editCard"/>
     <div
       class="mt-5 w-11/12 h-32 bg-white border border-dashed border-gray-300 rounded-lg group hover:border-solid hover:border-gray-500 cursor-pointer max-w-xxs md:mr-3 md:ml-3"
       v-if="cards.length <= maxCards-1"
+      @click="addCard"
     >
       <div class="flex relative h-3/4">
         <div
@@ -24,7 +25,7 @@ export default {
   props: {
     maxCards: {
       type: Number,
-      default: 7
+      default: 6
     }
   },
   components: {
@@ -61,17 +62,35 @@ export default {
           first6: 1234,
           last6: 5554
         },
-        {
-          id: 5,
-          title: "моя карта 5",
-          active: true,
-          first6: 2232,
-          last6: 8733
-        },
-        { id: 6, title: "моя карта 6", active: true, first6: 2232, last6: 8733 }
+        // {
+        //   id: 5,
+        //   title: "моя карта 5",
+        //   active: true,
+        //   first6: 2232,
+        //   last6: 8733
+        // }
       ],
       cardsLength: 0
     };
+  },
+  methods: {
+    removeCard(id) {
+      this.cards = this.cards.filter(card => card.id !== id)
+    },
+    editCard(editedCard) {
+      // console.log(editedCard);
+      let index = this.cards.findIndex(function(card) {
+        return card.id === editedCard.id
+      });
+      this.cards.splice(index, 1, Object.assign(this.cards[index], editedCard));
+    },
+    addCard() {
+      this.cards.push({
+        id: this.cards.length+1,
+        title: `Моя карта ${this.cards.length+1}`,
+        active: true
+      });
+    }
   },
   created() {
     this.cardsLength = this.cards.length;

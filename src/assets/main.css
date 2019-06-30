@@ -29,14 +29,19 @@
   transition: opacity .25s ease;
 }
 
+.card-type svg{
+  height: 35px;
+  width: 35px;
+}
+
 .credit-card:hover {
-      -webkit-box-shadow: 0 3px 5px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
-    box-shadow: 0 3px 5px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+  -webkit-box-shadow: 0 3px 5px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+  box-shadow: 0 3px 5px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
   transform: translateY(-3px);
 }
 
 .fadeIn-enter-active, .fadeIn-leave-active {
-  transition: opacity .5s;
+  transition: opacity .25s;
 }
 
 .fadeIn-enter, .fadeIn-leave-to {
