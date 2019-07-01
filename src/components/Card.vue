@@ -1,20 +1,23 @@
 <template>
-  <!-- xs-land:w-1/2 md:w-1/3 -->
   <div
-    class="mt-5 w-11/12 h-32 bg-white border border-gray-300 rounded-lg cursor-pointer max-w-xxs md:mr-3 md:ml-3 shadow-md bg-gray-300 hover:bg-gray-400 hover:border-gray-400 credit-card"
+    class="mt-5 w-11/12 h-32 bg-white border-transparent rounded-lg cursor-pointer max-w-xxs md:mr-3 md:ml-3 shadow-md bg-gray-300 hover:bg-gray-400 hover:border-gray-400 credit-card"
+    ref="cardTemplate"
     @click="cardToggle = !cardToggle"
   >
     <div class="flex justify-between p-3">
-      <div class="w-1/2 flex-grow text-lg text-left flex flex-col">
+      <div class="w-1/2 text-lg text-left flex flex-col">
         <input
           type="text"
           name="title"
           v-show="editMode"
           ref="titleInput"
           @click.stop
-          class="bg-gray-500 px-2 text-white text-base uppercase font-bold outline-none rounded credit-card-title"
+          class="bg-1/2black w-175 sm:w-190 px-2 text-white text-base uppercase font-bold outline-none rounded credit-card-title"
         >
-        <span class="uppercase font-bold credit-card-title text-white text-base" v-show="!editMode">{{ title }}</span>
+        <span
+          class="uppercase font-bold credit-card-title text-white text-base"
+          v-show="!editMode"
+        >{{ title }}</span>
         <span
           class="w-12/12 text-xs mt-3 group-hover:opacity-100 uppercase font-bold"
           :class="active ? 'text-green-400' : 'text-red-400'"
@@ -61,22 +64,30 @@
         ref="numberInput"
         @input="numberInput"
         @click.stop
-        class="bg-gray-500 px-2 text-white text-base uppercase outline-none rounded text-sm tracking-wide text-white credit-card-number"
-        v-show="editMode && !first6"
+        class="bg-1/2black w-175 sm:w-190 px-2 text-white text-base uppercase outline-none rounded text-sm tracking-wide text-white credit-card-number"
+        v-show="editMode && !first4"
         v-model="cardNumber"
+        placeholder="номер карты"
       >
       <span
-        v-show="!editMode"
+        v-show="!editMode || editMode && first4"
         class="text-lg tracking-wide text-white credit-card-number"
-      >{{first6}} **** **** {{last6}}</span>
+      >{{first4}} **** **** {{last4}}</span>
       <div class="flex justify-center align-center items-center">
-        <div class="bank-type">
-          <img src="../assets/sber.png" class="w-12 inline-block" alt>
+        <div class="bank-type h-12 w-12">
+          <svg class="icon inline-block bankLogo"></svg>
         </div>
         <div class="card-type">
-          <!-- <img src="../assets/mastercard.png" class="w-12 inline-block" alt> -->
-          <svg v-if="String(first6)[0]==5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 15 10"><path opacity=".15" fill-rule="evenodd" clip-rule="evenodd" d="M10 10H5c-2.7 0-5-2.2-5-5 0-2.7 2.2-5 5-5h5c2.7 0 5 2.2 5 5s-2.2 5-5 5z"/><path fill="#F8771B" d="M7.8 2.2l-.3-.3-.3.3C6.4 3 6 3.9 6 5c0 1.1.4 2.1 1.2 2.8l.3.3.3-.3C8.6 7.1 9 6.1 9 5c0-1.1-.4-2-1.2-2.8z"/><path fill="#F33519" d="M2.2 2.2C1.4 3 1 3.9 1 5c0 1.1.4 2.1 1.2 2.8C3 8.6 3.9 9 5 9c1 0 1.8-.3 2.5-.9l-.3-.3C6.4 7.1 6 6.1 6 5c0-1.1.4-2 1.2-2.8l.3-.3C6.8 1.3 6 1 5 1c-1.1 0-2 .4-2.8 1.2z"/><path fill="#FDB81C" d="M14 5c0-1.1-.4-2-1.2-2.8C12.1 1.4 11.1 1 10 1c-1 0-1.8.3-2.5.9l.3.3C8.6 3 9 3.9 9 5c0 1.1-.4 2.1-1.2 2.8l-.3.3c.7.6 1.5.9 2.5.9 1.1 0 2.1-.4 2.8-1.2S14 6.1 14 5z"/></svg>
-          <svg v-if="String(first6)[0]==4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 19 6"><path fill="#fff" d="M6.7 5.9l1-5.8h1.5l-1 5.8zM13.8.2C13.5.1 13 0 12.4 0c-1.5 0-2.6.8-2.6 1.9 0 .8.8 1.3 1.3 1.6.7.3.9.5.9.7 0 .4-.5.6-.9.6-.6 0-.9-.1-1.4-.3l-.3-.1-.2 1.3c.4.2 1 .3 1.7.3 1.6 0 2.7-.8 2.7-2 0-.7-.4-1.2-1.3-1.6-.5-.3-.9-.4-.9-.7 0-.2.3-.5.9-.5.5 0 .9.1 1.2.2l.1.1.2-1.3zm2.1 3.7c.1-.3.6-1.6.6-1.6l.2-.6.1.5s.3 1.4.4 1.7h-1.3zM17.8.1h-1.2c-.4 0-.6.1-.8.5l-2.3 5.3h1.6s.3-.7.3-.9h2c0 .2.2.9.2.9H19L17.8.1zM5.4.1l-1.5 4-.2-.8c-.2-1-1.1-2-2.1-2.5L3 5.9h1.6L7 .1H5.4zM2.5.1H0v.1c1.9.5 3.2 1.6 3.7 3L3.2.6C3.1.2 2.8.1 2.5.1" data-qa-file="Visa"/></svg>
+          <svg
+            v-if="paymentSystem == 'MASTERCARD'"
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 15 10"
+          >
+            <use xlink:href="#mastercard"></use>
+          </svg>
+          <svg v-if="paymentSystem == 'VISA'" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 19 6">
+            <use xlink:href="#visa"></use>
+          </svg>
         </div>
       </div>
     </div>
@@ -90,7 +101,9 @@ export default {
       cardToggle: false,
       cardNumber: "",
       editMode: false,
-      cardType: ''
+      cardType: "",
+      logo: "",
+      paymentSystem: ""
     };
   },
   props: {
@@ -105,16 +118,20 @@ export default {
       type: Boolean,
       required: true
     },
-    first6: {
+    first4: {
       type: [Number, Boolean],
       default: false
     },
-    last6: {
+    last4: {
       type: [Number, Boolean],
       default: false
     },
     updateCard: {
       type: Function,
+      required: true
+    },
+    cardsLogo: {
+      type: Array,
       required: true
     }
   },
@@ -124,11 +141,33 @@ export default {
     },
     async numberInput(e) {
       let value = e.target.value;
-      // if(value.length >= 6) {
-      //   let data = await fetch(`https://api.tinkoff.ru/v1/brand_by_bin?bin=${value.slice(0,6)}`);
-      //   console.log(await data.json());
-         
-      // }
+      if (value.length === 6) {
+        let response = await fetch(
+          `https://api.tinkoff.ru/v1/brand_by_bin?bin=${value.slice(0, 6)}`
+        );
+        const data = await response.json();
+        if (!data.resultCode.includes("ERROR")) {
+          const { baseColor, logoFile, paymentSystem } = data.payload;
+          if (baseColor) {
+            this.$refs.cardTemplate.style.backgroundColor = "#" + baseColor;
+          }
+          if (logoFile) {
+            let logo = logoFile.split(".")[0];
+            if (this.cardsLogo.includes(logo)) {
+              this.$refs.cardTemplate.querySelector(".bankLogo").innerHTML = `
+                <use xlink:href="#${logo}"></use>
+              `;
+            }
+          }
+          if (paymentSystem) {
+            this.paymentSystem = paymentSystem;
+          }
+        }
+      } else if (value.length < 6) {
+        this.$refs.cardTemplate.style.removeProperty("background-color");
+        this.$refs.cardTemplate.querySelector(".bankLogo").innerHTML = ``;
+        this.paymentSystem = "";
+      }
     }
   },
   computed: {
@@ -137,23 +176,25 @@ export default {
     }
   },
   created() {
-    if (!this.first6) {
+    if (!this.first4) {
       this.editMode = true;
       this.cardToggle = true;
     }
+  },
+  mounted() {
+    this.$refs.titleInput.value = this.title;
   },
   watch: {
     editMode() {
       if (!this.editMode) {
         const card = { title: this.$refs.titleInput.value, id: this.id };
         this.$nextTick(function() {
-          if (!this.first6) {
+          if (!this.first4) {
             const cardNumber = this.$refs.numberInput.value.replace(/\D/g, "");
-            card.first6 = +cardNumber.slice(0, 4);
-            card.last6 = +cardNumber.slice(-4);
+            card.first4 = +cardNumber.slice(0, 4);
+            card.last4 = +cardNumber.slice(-4);
           }
           this.updateCard(card);
-          // console.log(this.$refs.titleInput.value);
         });
       }
     }
