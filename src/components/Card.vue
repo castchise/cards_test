@@ -103,12 +103,13 @@ export default {
       editMode: false,
       cardType: "",
       logo: "",
-      paymentSystem: ""
+      paymentSystem: "",
+      cardFetch: false
     };
   },
   props: {
     id: {
-      type: Number
+      type: String
     },
     title: {
       type: String,
@@ -141,13 +142,15 @@ export default {
     },
     async numberInput(e) {
       let value = e.target.value;
-      if (value.length === 6) {
+      if (value.length >= 6 && !this.cardFetch) {
+        value = value.split(' ').join('');
         let response = await fetch(
           `https://api.tinkoff.ru/v1/brand_by_bin?bin=${value.slice(0, 6)}`
         );
         const data = await response.json();
         if (!data.resultCode.includes("ERROR")) {
           const { baseColor, logoFile, paymentSystem } = data.payload;
+          this.cardFetch = true;
           if (baseColor) {
             this.$refs.cardTemplate.style.backgroundColor = "#" + baseColor;
           }
@@ -163,12 +166,14 @@ export default {
             this.paymentSystem = paymentSystem;
           }
         }
-      } else if (value.length < 6) {
+      }  else if (value.length < 6) {
         this.$refs.cardTemplate.style.removeProperty("background-color");
         this.$refs.cardTemplate.querySelector(".bankLogo").innerHTML = ``;
         this.paymentSystem = "";
+        this.cardFetch = false;
       }
     }
+    // 4167 9226 4812 1234
   },
   computed: {
     status() {

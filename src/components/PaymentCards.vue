@@ -32,6 +32,7 @@
 </template>
 <script>
 import card from "./Card";
+import uuid from "uuid/v1";
 
 export default {
   props: {
@@ -46,7 +47,7 @@ export default {
   data: function() {
     return {
       cards: [],
-      cardsLength: 0,
+      counter: 1,
       cardsLogo: [
         "akb",
         "alfabank",
@@ -79,14 +80,11 @@ export default {
     },
     addCard() {
       this.cards.push({
-        id: this.cards.length + 1,
-        title: `Моя карта ${this.cards.length + 1}`,
+        id: uuid(),
+        title: `Моя карта ${this.counter++}`,
         active: true
       });
     }
-  },
-  created() {
-    this.cardsLength = this.cards.length;
   }
 };
 </script>
